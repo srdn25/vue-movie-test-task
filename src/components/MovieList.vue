@@ -5,6 +5,8 @@
       :key="movie.imdbID"
       :movie="movie"
       />
+
+    <button @click="() => loadMovies(this.page + 1)">Load more</button>
   </div>
 </template>
 
@@ -19,15 +21,21 @@ export default Vue.extend({
   data() {
     return {
       movies: [] as Movie[],
+      page: 1,
     };
   },
   async created() {
-    await this.loadMovies();
+    await this.loadMovies(this.page);
   },
   methods: {
-    async loadMovies() {
-      const result = await MovieService.movieService.getMovieList(/* TODO */ '273b9080');
-      this.movies = result.result;
+    async loadMovies(page: number) {
+      try {
+        this.page = page;
+        const result = await MovieService.movieService.getMovieList(/* TODO */ '273b9080', page);
+        this.movies = result.result;
+      } catch (err) {
+        console.error(`Something wrong in request movies. ${err}`);
+      }
     },
   },
   components: {
