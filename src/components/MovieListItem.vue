@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    {{ movie.Title }}
+    <router-link v-bind:to="'/movies/' + movie.imdbID">{{ movie.Title }}</router-link>
   </div>
 </template>
 
